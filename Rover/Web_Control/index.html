@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Rover Web Control</title>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://bootswatch.com/4/spacelab/bootstrap.css">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">
+            <img width="30" height="30" class="nav-ufo" src="static/images/mars-rover.svg" alt="Icon made by Eucalyp from https://www.flaticon.com/authors/eucalyp">
+            <span>Rover</span>
+        </a>
+    </nav>
+    
+    <!-- Header -->
+    <header>
+      <div class="hero text-center">
+        <h1>Rover Web Control</h1>
+        <p>The Truth is Out There</p>
+      </div>
+    </header>
+    <!-- Main for the page's contents -->
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12" align="center">
+            <svg height="360" width="360">
+              <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#b5b5b5, #8f8f8f;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#858585;stop-opacity:1" />
+                </linearGradient>
+                <!-- Symbol Description -->
+                <symbol id="triangle_md">
+                  <path d="M 10 10 L 10 60 L 60 60 Z" fill="url(#grad1)" stroke="url(#grad1)" stroke-linejoin="round" stroke-width="20"/>
+                </symbol>
+                <symbol id="triangle_lg">
+                  <path d="M 10 10 L 10 110 L 110 110 Z" fill="url(#grad1)" stroke="url(#grad1)" stroke-linejoin="round" stroke-width="20"/>
+                </symbol>
+              </defs>
+              <circle id="auto_run" cx="185" cy="185" fill="url(#grad1)" r="46"/>
+              <!-- Symbol Useage -->
+              <!-- Inner Medium Triangle Buttons -->
+              <use id="forward" xlink:href="#triangle_md" x="150" y="90" transform="rotate(135 185 125)"/>
+              <use id="reverse" xlink:href="#triangle_md" x="150" y="210" transform="rotate(-45 185 245)"/>
+              <use id="left" xlink:href="#triangle_md" x="90" y="150" transform="rotate(45 125 185)"/>
+              <use id="right" xlink:href="#triangle_md" x="210" y="150" transform="rotate(-135 245 185)"/>
+              <!-- Outer Large Triangle Buttons-->
+              <use id="pivot_left" xlink:href="#triangle_lg" x="60" y="70" transform="rotate(90 125 125)"/>
+              <use id="pivot_right" xlink:href="#triangle_lg" x="200" y="70" transform="rotate(180 255 125)"/>
+              <use id="disable_left" xlink:href="#triangle_lg" x="60" y="190"/>
+              <use id="disable_right" xlink:href="#triangle_lg" x="200" y="190" transform="rotate(-90 255 255)"/>
+              <text x="167" y="188" fill="red">Auto</text>
+              <text x="155" y="126" fill="white">Forward</text>
+              <text x="155" y="254" fill="white">Reverse</text>
+              <text x="96" y="188" fill="white">Left</text>
+              <text x="242" y="188" fill="white">Right</text>
+              <text x="60" y="70" fill="white" transform="rotate(-45 150 70)">Pivot Left</text>
+              <text x="200" y="70" fill="white" transform="rotate(45 200 110)">Pivot Right</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Footer -->
+    <footer>
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-light progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+      </div>
+      <div class="footer-copyright text-center py-3">© Copyright bdthai81@gmail.com</div>
+    </footer>
+  </div>
+  <!-- Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <!-- D3.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+  <script src="static/js/app.js"></script>
+</body>
+
+</html>
