@@ -14,7 +14,7 @@
     <!-- NavBar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="index.html">
-            <img width="30" height="30" class="nav-ufo" src="static/images/mars-rover.svg" alt="Icon made by Eucalyp from https://www.flaticon.com/authors/eucalyp">
+            <img width="30" height="30" class="nav-ufo" src="static/images/mars-rover.svg">
             <span>Rover</span>
         </a>
     </nav>
@@ -30,7 +30,24 @@
     <main>
       <div class="container">
         <div class="row">
-          <div class="col-md-12" align="center">
+          <!-- Image View -->
+          <div class="col-md-6">
+            <div class="card border-light">
+              <div class="card-header">
+                <div class="input-group mb-3">
+                  <label class="form-control">Rover's View </label>
+                  <div class="input-group-append">
+                    <button id="btnRView" class="btn btn-outline-secondary" type="button">Disabled</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body" id="rover_view_container">  
+                <img width="100%" height="100%" id="rover_view_img">
+              </div>
+            </div>
+          </div>
+          <!-- Web Controller -->
+          <div class="col-md-6">
             <svg id="svgControl" height="360" width="360">
               <defs>
                 <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -72,6 +89,7 @@
       <div class="footer-copyright text-center py-3">© Copyright bdthai81@gmail.com</div>
     </footer>
   </div>
+  
   <!-- Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>

@@ -84,23 +84,14 @@ function init() {
 // Run init()
 init()
 
-var startTime = null;
-var timer = null;
-
-function action(name) {
-    // later record end time
-    var endTime = new Date();
-    // time difference in ms
-    var timeDiff = endTime - startTime;
-    // strip the miliseconds
-    timeDiff /= 1;
-    // get seconds
-    var seconds = Math.round(timeDiff % 100000000);
-    // set tf to 0.1s if clicked, else 0.5 on hold
-    tf = (seconds > 499) ? '0.5':'0.1'
-    var web_json = { "webCommand": name, "tf": tf };
+// Declare SVG Control Buttons & Event Handler
+d3.selectAll("g").on("mousedown", function() {
+    // you can select the element just like any other selection
+    var gBtn = d3.select(this);
     
-    // ajax the JSON to the server
+    var web_json = { "webCommand": gBtn.attr("id") };
+    
+    // ajax the JSON to the server: start motion
     $.ajax({
         type: 'POST',
         url: '/command',
@@ -109,20 +100,56 @@ function action(name) {
         contentType: "application/json",
         dataType: 'json'
     });
-};
-
-// Declare SVG Control Buttons & Event Handler
-d3.selectAll("g").on("mousedown", function() {
-    // you can select the element just like any other selection
-    var gBtn = d3.select(this);
-    startTime = new Date();
-    // execute action on click
-    action(gBtn.attr("id"));
-    // execute action every 0.5 second, if user continues to hold
-    timer = setInterval(action, 500, gBtn.attr("id"));
 });
 
 d3.selectAll("g").on("mouseup", function() {
-    clearInterval(timer);
+    // ajax the JSON to the server: stop_motion
+    $.ajax({
+        type: 'POST',
+        url: '/stop_motion',
+        data: JSON.stringify (""),
+        success: function(data) { },
+        contentType: "application/json",
+        dataType: 'text'
+    });
+});
+
+// stream images
+var boolFPS = false;
+
+function image_action() {
+    var curRoverViewImg = "./static/images/rover_view/rover_view_" + new Date().getTime() + ".png";
+    var img_json = { "imgName": curRoverViewImg };
+    // ajax the JSON to the server to start motion
+    $.ajax({
+        type: 'POST',
+        url: '/camera_image',
+        data: JSON.stringify (img_json),
+        success: function(data) { 
+            // refresh rover image
+            d3.select("#rover_view_img").attr("src", curRoverViewImg);
+        },
+        contentType: "application/json",
+        dataType: 'text'
+    });
+    
+};
+
+d3.select("#btnRView").on("click", function() {
+    boolFPS = !boolFPS;
+    //update btn display to enabled
+    d3.select("#btnRView").text("Enabled");
+    
+    if (boolFPS) {
+        image_action();
+        // execute action every 1.5seconds
+        timer = setInterval(image_action, 1500);
+    }
+    else {
+        clearInterval(timer);
+        //update btn display to disabled
+        d3.select("#btnRView").text("Disabled");
+    }
+    
 });
   
