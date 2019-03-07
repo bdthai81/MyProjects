@@ -9,3 +9,6 @@ __pycache__/
 
 # config.py 
 config.py
+
+# ignore rover_view images
+Rover/Web_Control/static/images/rover_view/*
