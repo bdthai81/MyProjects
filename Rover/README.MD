@@ -16,3 +16,10 @@ Phase 2:
   - Mouse/Touch screen: on click, motor will run for 0.1s. on hold, motor will run increments of 0.5s continuously.
 
 ![webControl](images/web_control.jpg)
+
+Phase 3:
+* Added Rover View into Web Control webpage: flask, bootstrap, javascript
+  - Used picamera
+* Updated web control: mouse down, start motion. mouse up, end motion.
+
+![webControl](images/rover_view.jpg)
