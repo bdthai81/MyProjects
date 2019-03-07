@@ -1,10 +1,11 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 HelveticaNeue;
+}
 {\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red36\green38\blue41;\red27\green31\blue34;
 \red43\green39\blue19;\red0\green0\blue0;\red0\green0\blue0;\red255\green255\blue255;}
 {\*\expandedcolortbl;;\csgray\c0\c0;\cssrgb\c18824\c20000\c21176;\cssrgb\c14118\c16078\c18039;
 \cssrgb\c22353\c20000\c9412;\cssrgb\c0\c0\c0;\csgray\c0;\csgray\c100000;}
-\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\margl1440\margr1440\vieww14940\viewh13120\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 --- Install Raspberry Debian OS ---\
@@ -53,4 +54,29 @@ $ pip install \'97upgrade pip\cb2 \
 \cf0 \
 --- Install Modules ---\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \cb1 python-rpi.gpio}
+\cf0 \cb1 python-rpi.gpio\
+\
+--- Set up Camera ---\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f2 \cf6 \expnd0\expndtw0\kerning0
+$ sudo raspi-config\
+Interface option - > camera -> enable -> yes\
+reboot\
+\
+$ conda activate PythonData\
+$ pip install picamera\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f0 \cf0 \kerning1\expnd0\expndtw0 \
+Checkout 
+\f2 \cf6 \expnd0\expndtw0\kerning0
+sentdex\'92s youtube for sample\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf6 https://www.youtube.com/watch?v=qk1IVs5B1GI&index=5&list=PLQVvvaa0QuDesV8WWHLLXW_avmTzHmJLv\
+\
+
+\f0 \cf0 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+}
