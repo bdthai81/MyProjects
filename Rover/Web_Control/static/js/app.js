@@ -86,7 +86,7 @@ init()
 
 // Declare SVG Control Buttons & Event Handler
 d3.selectAll("g").on("mousedown", function() {
-    // you can select the element just like any other selection
+    // select the element the user trigger
     var gBtn = d3.select(this);
     
     var web_json = { "webCommand": gBtn.attr("id") };
@@ -137,6 +137,16 @@ function image_action() {
 
 d3.select("#btnRView").on("click", function() {
     boolFPS = !boolFPS;
+    // default camera back to center
+    $.ajax({
+        type: 'POST',
+        url: '/center_camera',
+        data: JSON.stringify (""),
+        success: function(data) { },
+        contentType: "application/json",
+        dataType: 'text'
+    });
+    
     //update btn display to enabled
     d3.select("#btnRView").text("Enabled");
     
