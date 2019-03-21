@@ -114,7 +114,7 @@ d3.selectAll("g").on("mouseup", function() {
     });
 });
 
-// stream images
+// Stream images
 var boolFPS = false;
 
 function image_action() {
@@ -163,3 +163,22 @@ d3.select("#btnRView").on("click", function() {
     
 });
   
+// Stream sensors' distance
+function sensors_action() {
+    // ajax the JSON to the server to start sensor distance
+    $.ajax({
+        type: 'POST',
+        url: '/sensors_distance',
+        data: JSON.stringify (""),
+        success: function(data) { 
+            d3.select("#sensorsValue").text(data);
+            },
+        contentType: "application/json",
+        dataType: 'text'
+    });
+    
+};
+
+sensors_action();
+// execute action every 0.5seconds
+timer = setInterval(sensors_action, 1000);

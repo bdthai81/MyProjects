@@ -3,6 +3,7 @@ import json
 import motor
 import camera
 import camera_tilt
+import sensor
 import base64
 
 app = Flask(__name__)
@@ -12,6 +13,9 @@ camera_tilt_commands = ["T_D_", "T_U_", "T_L_", "T_R_"]
 
 @app.route("/")
 def index():
+    # Center camera view, use as default
+    camera_tilt.center()
+    
     return render_template("index.html")
 
 @app.route("/command", methods=["POST"])
@@ -55,6 +59,13 @@ def camera_image():
     #    encoded_string = base64.b64encode(image_file.read())
     
     return ""
+    
+@app.route("/sensors_distance", methods=["POST"])
+def sensors_distance():
+    # Run sensors
+    results = sensor.runSensors()
+    
+    return ", ".join([str(i) for i in results])
 
 if __name__ == "__main__":
     app.run(host='192.168.0.112', debug=True)
