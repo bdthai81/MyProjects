@@ -23,3 +23,12 @@ Phase 3:
 * Updated web control: mouse down, start motion. mouse up, end motion.
 
 ![webControl](images/rover_view.jpg)
+
+Phase 4:
+* Added camera tilt feature: webpage, flask, javascript, python
+  - Used pololu maestro servo controller (https://www.pololu.com/docs/0J40)  & it's serial servo commands.
+    - One heck of a learning curve. Especially, when the customer service reply with, "We do not support the Maestro Control Center on ARM-based Linux machines like the Raspberry Pi.  You can find this information under the "Supported Operating Systems" section of the Maestro user's guide."  
+    - Wished I've done more research before I made the purchase, instead of just buying the controller posted on the robotic vendor list.
+    - Regardless, figured it out by from some tinkering and good resources (https://github.com/FRC4564/Maestro) along with the sdk.
+
+![webControl](images/camera_tilting.gif)
