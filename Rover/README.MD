@@ -32,3 +32,11 @@ Phase 4:
     - Regardless, figured it out by from some tinkering and good resources (https://github.com/FRC4564/Maestro) along with the sdk.
 
 ![webControl](images/camera_tilting.gif)
+
+Phase 5:
+* Added distance sensors to front of Rover
+  - Used 5 HC-SR04 units to measure object(s) distance from the front of rover.
+  - Coded TRIG outputs to fire from Maestro servo controller (set channels 13-17).
+  - Coded ECHO inputs to detect returned sonar wave from GPIO pins.
+* Update display of sensors' distance on Web Controller page every 0.5sec atm.
+* Pending on longer jumper wires to attach sensors to front (thus, no image atm).
