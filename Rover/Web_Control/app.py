@@ -6,6 +6,7 @@ import camera
 import camera_tilt
 import sensor
 import base64
+import atexit
 
 app = Flask(__name__)
 
@@ -15,7 +16,6 @@ camera_tilt_commands = ["T_D_", "T_U_", "T_L_", "T_R_"]
 
 # Setup GPIO mode to Boardcom SOC channel
 GPIO.setmode(GPIO.BCM)
-
 # Create motor object
 mo = motor.Motor()
 # Create camera tilt object
@@ -23,9 +23,6 @@ cto = camera_tilt.Camera_tilt()
 # Create Sensor object
 so = sensor.Sensor()
 
-#GPIO.cleanup()
-# Close controller session
-#servo.close()
 
 @app.route("/")
 def index():
@@ -83,5 +80,19 @@ def sensors_distance():
     
     return ", ".join([str(i) for i in results])
 
+def exit_handler():
+    """
+    Clean up GPIO & Maestro Controller
+    """
+    print('My application is ending.')
+    # Center back camera postion
+    cto.center()
+    # Cleanup GPIO
+    GPIO.cleanup()
+    # Close controller session
+    cto.servo.close()
+    
+
 if __name__ == "__main__":
     app.run(host='192.168.0.112', debug=True)
+    atexit.register(exit_handler)
