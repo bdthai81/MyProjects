@@ -14,7 +14,7 @@
 * Train Audio Files
   - Python script that converts .wav and .mp3 to .wav audio file with 44,100 sample rate. Python script that records audio.
 * Wake Word Ethan
-  - Extension of Deep Learning course assignment (https://github.com/bdthai81/DeepLearning-Coursera-Assignments/tree/master/C5W3-Trigger%20word%20detection)
+  - Extension of Deep Learning course assignment [C5W3-Trigger word detection](https://github.com/bdthai81/DeepLearning-Coursera-Assignments/tree/master/C5W3-Trigger%20word%20detection)
   - Goal: To make an wake word off "Ethan" instead of "Activation"
   - Made modifications on the training audio sample from 10s to 4s.
-  - Pending completion: In the process of learning how to gather better training data. (Resources above)
+  - Pending completion: In the process of learning how to gather better training data. [Resources](https://github.com/bdthai81/MyProjects/tree/master/Resources)
