@@ -40,3 +40,12 @@ Phase 5:
   - Coded ECHO inputs to detect returned sonar wave from GPIO pins.
 * Update display of sensors' distance on Web Controller page every 0.5sec atm.
 * Pending on longer jumper wires to attach sensors to front (thus, no image atm).
+
+![webControl](images/rover_phase_5.JPG)
+
+Phase 6:
+* Restructure the app after a better understanding the project's modules.
+  - Added settings.py: Set all the channel variables in GPIO, H-Bridge, and Maestro Controller
+  - Updated motor.py, sensor.py, camera_tilt.py: Define the functions under a Class for easier OO handling.
+  - Updated app.py: updated app.py to handle the new classes
+* Will touch up the front end coding next. Found a lot of inspiration after going thru the D3 advance lessons this week from my Instructor Aash Anand (Great motivitor).
