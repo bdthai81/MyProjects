@@ -48,4 +48,5 @@ Phase 6:
   - Added settings.py: Set all the channel variables in GPIO, H-Bridge, and Maestro Controller
   - Updated motor.py, sensor.py, camera_tilt.py: Define the functions under a Class for easier OO handling.
   - Updated app.py: updated app.py to handle the new classes
+  - Updated comments in the files above
 * Will touch up the front end coding next. Found a lot of inspiration after going thru the D3 advance lessons this week from my Instructor Aash Anand (Great motivitor).
