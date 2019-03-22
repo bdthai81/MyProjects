@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, request, jsonify
+import RPi.GPIO as GPIO
 import json
 import motor
 import camera
@@ -8,13 +9,28 @@ import base64
 
 app = Flask(__name__)
 
+# Define function name list to match WebControl
 motor_commands = ["Forward", "Reverse", "Left", "Right", "Pivot_Left", "Pivot_Right"]
 camera_tilt_commands = ["T_D_", "T_U_", "T_L_", "T_R_"]
+
+# Setup GPIO mode to Boardcom SOC channel
+GPIO.setmode(GPIO.BCM)
+
+# Create motor object
+mo = motor.Motor()
+# Create camera tilt object
+cto = camera_tilt.Camera_tilt()
+# Create Sensor object
+so = sensor.Sensor()
+
+#GPIO.cleanup()
+# Close controller session
+#servo.close()
 
 @app.route("/")
 def index():
     # Center camera view, use as default
-    camera_tilt.center()
+    cto.center()
     
     return render_template("index.html")
 
@@ -27,23 +43,23 @@ def command():
     # Determine if webCommand is a motor or tilt_camera command, then execute command
     if web_command in motor_commands:
         # Execute action of request movement
-        results = getattr(motor, web_command)()
+        results = getattr(mo, web_command)()
     elif web_command in camera_tilt_commands:
         # Execute action of request movement
-        results = getattr(camera_tilt, web_command)()
+        results = getattr(cto, web_command)()
    
     return jsonify(webCommand=web_command)
 
 @app.route("/stop_motion", methods=["POST"])
 def stop_motion():
-    motor.stop_motion()
+    mo.stop_motion()
     
     return ""
 
 @app.route("/center_camera", methods=["POST"])
 def center_camera():
     # Center camera view, use as default
-    camera_tilt.center()
+    cto.center()
     
     return ""
 
@@ -63,7 +79,7 @@ def camera_image():
 @app.route("/sensors_distance", methods=["POST"])
 def sensors_distance():
     # Run sensors
-    results = sensor.runSensors()
+    results = so.runSensors()
     
     return ", ".join([str(i) for i in results])
 
