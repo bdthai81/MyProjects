@@ -1,0 +1,83 @@
+.link {
+  stroke: #999;
+  stroke-width: 1.5px;
+  stroke-opacity: .6;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.active {
+  font-weight: bold;
+  /* fill: #000; */
+  transition: fill 0.3s ease-out;
+  text-anchor: middle;
+}
+
+.inactive {
+  font-weight: lighter;
+  /* fill: #c9c9c9; */
+  transition: fill 0.3s ease-out;
+  text-anchor: middle;
+}
+
+.inactive:hover {
+  fill: #000;
+  cursor: pointer;
+}
+
+.chart {
+  display: block;
+  margin: 0;
+}
+
+/* Tooltip */
+.d3-tip {
+  padding: 6px;
+  font-size: 12px;
+  line-height: 1;
+  line-height: 1.5em;
+  color: #fff;
+  text-align: center;
+  text-transform: capitalize;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips specifically */
+.d3-tip.n:after {
+  margin: -2px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+/* Mobile Rules */
+@media screen and (max-width: 530px) {
+  .stateText {
+    display: none;
+  }
+
+  .aText {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .aText {
+    font-size: 13px;
+  }
+}
