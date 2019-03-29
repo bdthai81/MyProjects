@@ -21,7 +21,7 @@ var studentMap = studentList.map(d=>d);
 // Concat the arrays of former groups into 1
 var groupExisted = groupProject1.concat(groupProject2);
 // Split the students into the following # of teams
-var numTeams = 6;
+var numTeams = 5;
 // Number of Projects
 var numProjects = 3;
 // Set the number of max members in the team
@@ -80,10 +80,18 @@ function shuffleNewTeams() {
       // update newMembers by filtering out newMembers' old teammates
       newMembers = newMembers.filter(e => studentDict[newMember].indexOf(e) === -1);
     }
+    // break off shuffle, not enough new members to fulfill this team
+    if(newTeam.filter(e => e !== undefined).length < maxMembers) {
+      console.log("break");
+      break;
+    };
     // Push new team in the array of teams
     teams.push(newTeam);
     // Update studentList by filtering out new team members from array
     studentList = studentList.filter(e => newTeam.indexOf(e) === -1);
+    // Update maxMembers so the top teams get the larger team and balance out the team amount
+    maxMembers = Math.ceil(studentList.length / (numTeams-(i+1)));
+    console.log(i + " " + studentList.length + " " + maxMembers);
   }
   // return multiple array of new teams
   return teams;
@@ -101,14 +109,19 @@ function initNewTeamsData() {
   teams = shuffleNewTeams();
   // flatten new teams multi-array to verify for any undefined
   var flattenTeams = [].concat.apply([], teams);
-  // Reshuffle if teams are incomplete
-  while(flattenTeams.indexOf(undefined) !== -1) {
+  // filter out undefined 
+  flattenTeams = flattenTeams.filter(e => e !== undefined)
+  console.log(flattenTeams.length);
+  // Reshuffle if all students are not assigned
+  while((flattenTeams.length !== studentMap.length)) {
     // Reset studentList
     studentList = studentMap.map(d=>d);
     // Reshuffle new teams
     teams = shuffleNewTeams();
     // flatten new teams multi-array to verify for any undefined
     flattenTeams = [].concat.apply([], teams);
+    // filter out undefined 
+    flattenTeams = flattenTeams.filter(e => e !== undefined)
     // increment counter
     shuffleCounter = shuffleCounter + 1;
   }
@@ -277,7 +290,6 @@ function createGroupProject(chartGroup, projectNumber) {
  */
 function createLinksProject(projectData, linkProjects, projectNumber) {
   // draw links per team
-  console.log(projectData);
   projectData.forEach((team, teamIx) => {
     // draw links per member
     team.forEach(member => {
