@@ -1,0 +1,34 @@
+/* Rover */
+/* rover's body  */
+.rover rect {
+    fill: rgb(138, 152, 167);
+}
+/* rover's wheels */
+.rover line {
+    stroke: black;
+    stroke-width:2;
+}
+/* rover's sensors  */
+.sensor {
+    fill: none;
+    stroke: blue;
+    stroke-dasharray: 20,10,5,5,5,10;
+    stroke-width:2;
+    opacity:0.5;
+}
+
+path {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+  }
+  
+  line {
+    fill: none;
+    stroke: red;
+    stroke-width: 1.5px;
+  }
+  
+  circle {
+    fill: red;
+  }
