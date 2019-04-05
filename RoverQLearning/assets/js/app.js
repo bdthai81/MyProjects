@@ -48,39 +48,31 @@ gObj = svg.append("g").attr("id", largeBoulderData.imgName);
 var largeBoulder = createObject(gObj, largeBoulderData, 325, 500, objectsList);
 console.log(objectsList);
 
-var line = svg.append("line");
-
-var circle = svg.append("circle")
-    .attr("cx", -10)
-    .attr("cy", -10)
-    .attr("r", 3.5);
-
-var text = svg.append("text")
-    .attr("id", "distance")
-    .attr("x", 150)
-    .attr("y", 20)
-    .text("distance: ");
 
 // rover's position point [rotate, x, y]
 var point = [0, svgWidth/2, svgHeight/2];
 // log of rover's movement
 var momentum = [0, 0];
 
+// Create 5 sensor line/circle
+roverData.sensors.forEach(sensor => {
+  var gSensor = svg.append("g")
+    .attr("id", `sensor${sensor[0]}`);
+  gSensor.append("line");
+  gSensor.append("circle")
+    .attr("cx", -10)
+    .attr("cy", -10)
+    .attr("r", 3.5);
+  gSensor.append("text");
+});
+
 function move(distance) {
   // move rotate a positive angle
   point[0] = (point[0]+360)%360;
-  // move based on rotate angle
-  switch(point[0]) {
-    case 0:
-      return [momentum[0], momentum[1] - distance];
-    case 90:
-      return [momentum[0] + distance, momentum[1]];
-    case 180:
-      return [momentum[0], momentum[1] + distance];
-    case 270:
-      return [momentum[0] - distance, momentum[1]];
-  }
-  return [momentum[0], momentum[1]]
+  // Rotate momentum's position based on angle
+  var m  = rotate(momentum[0], momentum[1], momentum[0], momentum[1]+distance, point[0]);
+
+  return [momentum[0] + m.x, momentum[1] + m.y]
 }
 
 function motion(command) {
@@ -91,19 +83,19 @@ function motion(command) {
     switch(command) {
       case "Forward":
         // Update movement
-        momentum = move(2);
+        momentum = move(-1);
         break;
       case "Reverse":
         // Update movement
-        momentum = move(-2);
+        momentum = move(1);
         break;
       case "Pivot_Left":
         // Update movement
-        point[0] -= 90;
+        point[0] -= 15;
         break;
       case "Pivot_Right":
         // Update movement
-        point[0] += 90;
+        point[0] += 15;
         break;
       default:
         console.log("Unknown command");
@@ -130,74 +122,60 @@ d3.timer(function() {
   momentum[0] *= 0.9;
   momentum[1] *= 0.9;
 
-  // Update sensors
-  var p = sensorDistance(-45, point[1], point[2], objectsList);
-  var m = {x: point[1], y: point[2]};
-  console.log(p);
-  if(p) {
-    line.attr("x1", p.x).attr("y1", p.y).attr("x2", m.x).attr("y2", m.y);
-    circle.attr("cx", p.x).attr("cy", p.y);
-    text.text("distance: " + p.distance);
+  // Update all 5 sensors
+  roverData.sensors.forEach(sensor => {
+    // Get each sensor's angle position & add to rover's current angle position
+    var angle = sensor[0] + point[0];
+     // Check objects list for any objects within max range of sensor
+    var p = sensorDistance(angle, point[1], point[2], objectsList);
+    // Update sensor's x,y after rover rotation
+    var m = rotate(point[1], point[2], point[1]-(roverData.bodyWidth/2)+sensor[1], point[2]-(roverData.bodyHeight/2)+sensor[2], point[0]);
 
-    // console.log(m, p);
-  }
+    if(p) {
+      // Object detected within sensor's range
+      var gSensor = d3.select(`#sensor${sensor[0]}`);
+      // Display range
+      gSensor.select("line").attr("x1", p.x).attr("y1", p.y).attr("x2", m.x).attr("y2", m.y).style("opacity", .8);
+      gSensor.select("circle").attr("cx", p.x).attr("cy", p.y).style("opacity", .8);
+      gSensor.select("text").attr("x", p.x).attr("y", p.y).text(p.distance).style("opacity", .8);
+    }
+    else {
+      // no object within range, disable display
+      var gSensor = d3.select(`#sensor${sensor[0]}`);
+      gSensor.select("line").style("opacity", 0);
+      gSensor.select("circle").style("opacity", 0);
+      gSensor.select("text").style("opacity", 0);
+    }
+  })
 });
 
 // Scan and return distance on sensor from objects within max range
 function sensorDistance(angle, x, y, objectsList) {
-  var p = null
+  var p = null;
   var maxDistance = roverData.sensorRange;
-  var distance = roverData.sensorRange;
   // Check to see if any objects are within the sensor's range
   objectsList.forEach(e => {
-    
-    // sensor0 left view
-    if((angle===-90)&&(y>e.yMin) && (y<e.yMax) && ((x-e.xMax)>0) && ((x-e.xMax)<maxDistance)) {
-      // update closest object
-      if(distance > (x-e.xMax)) {
-        distance = (x-e.xMax);
-        var objDetected = d3.select(`#${e.name} path`);
-      }
+    // Create Rectangle within object's -45 range
+    var avgX = ((e.xMin+e.xMax)/2);
+    var avgY = ((e.yMin+e.yMax)/2);
+    var cx = avgX;
+    var cy = avgY;
+    var sbw = smallBoulderData.width/2;
+    var sbh = smallBoulderData.height/2;
+    var r = {
+      A: rotate(cx, cy, avgX-sbw, cy+sbh, angle),
+      B: rotate(cx, cy, cx+sbw, cy+sbh, angle),
+      C: rotate(cx, cy, cx+sbw, cy+sbh+maxDistance, angle),
+      D: rotate(cx, cy, cx-sbw, cy+sbh+maxDistance, angle)
     }
-    // sensor1 left-front view
-    if(angle==-45) {
-      // Create Rectangle within object's -45 range
-      var r = {
-        A: {x: e.xMin, y: e.yMax},
-        B: {x: e.xMax, y: e.yMin},
-        C: {x: e.xMin+maxDistance, y: e.yMax+maxDistance},
-        D: {x: e.xMax+maxDistance, y: e.yMin+maxDistance}
-      }
-      // Create m point from x,y
-      var m = {x: x, y: y};
-      // Check if point is in rectangle (object's sensor range)
-      if(pointInRectangle(m, r))  {
-        var objDetected = d3.select(`#${e.name} path`);
-        console.log(objDetected);
-        p = closestPoint(objDetected.node(), m);
-      }
-    }
-    
-    // sensor2 front view 
-    // check if conditions met: obj.xMin < x < obj.xMax && 0 < (y-yMax) < maxRange
-    // for object detection within max range of snesor
-    if((angle===0)&&(x>e.xMin) && (x<e.xMax) && ((y-e.yMax)>0) && ((y-e.yMax)<maxDistance)) {
-      // update closest object
-      if(distance > (y-e.yMax)) {
-        distance = (y-e.yMax);
-        var objDetected = d3.select(`#${e.name} path`);
-      }
-    }
-    
-    // sensor3 right-front view
-    // sensor4 right view
-    if((angle===90)&&(y>e.yMin) && (y<e.yMax) && ((e.xMax-x)>0) && ((e.xMax-x)<maxDistance)) {
-      // update closest object
-      if(distance > (x-e.xMax)) {
-        distance = (x-e.xMax);
-        var objDetected = d3.select(`#${e.name} path`);
-      }
-    }
+    // Create m point from x,y
+    var m = {x: x, y: y};
+    //  console.log(e.name, r);
+    // Check if point is in rectangle (object's sensor range)
+    if(pointInRectangle(m, r))  {
+      var objDetected = d3.select(`#${e.name} path`);
+      p = closestPoint(objDetected.node(), m);
+    } 
   });
 
   return p;

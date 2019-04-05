@@ -46,7 +46,7 @@ function createRover(parentNode) {
   // Create Sensors' sonar scan
   roverData.sensors.forEach((sensor, ix) => {
     rover.append("path")
-      .attr("id", "sensor"+ix)
+      // .attr("id", "sensor"+ix)
       .classed("sensor", true)
       .attr("d", `M${sensor[1]} ${sensor[2]} ${sensor[1]} ${-roverData.sensorRange}`)
       .attr("transform", `rotate(${sensor[0]} ${sensor[1]} ${sensor[2]})`);
@@ -58,7 +58,7 @@ function createRover(parentNode) {
 /**
  * Function creates a block/mineral object: 1px = 1cm scale
  * @param {*} parentNode: D3 parent node element to append the block/mineral object
- * @param {*} obj: object's dictionary variables from objectsData.js
+ * @param {*} obj: object's data in dictionary variables from objectsData.js
  * @param {*} x: x position 
  * @param {*} y: y position
  * @param {*} ol: (objectsList) add array of the object's dimensions into ol

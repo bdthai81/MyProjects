@@ -50,6 +50,24 @@ function closestPoint(pathNode, point) {
 
 
 /**
+ * Function rotates around the central point by the provided angle
+ * @param {*} cx : Central point x (origin)
+ * @param {*} cy : Central point y (origin)
+ * @param {*} x : The x coordinate of the point that we'll be rotating
+ * @param {*} y : The y coordinate of the point that we'll be rotating
+ * @param {*} angle : The angle, in degrees.
+ * returns the new x,y after rotation
+ */
+function rotate(cx, cy, x, y, angle) {
+  var radians = -(Math.PI / 180) * angle,
+      cos = Math.cos(radians),
+      sin = Math.sin(radians),
+      nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+      ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+  return {x: nx, y: ny};
+}
+
+/**
  * Rectangle is represented by points ABCD
  * Test if given point m is inside rectangle is given by:
  * 0 <= dot(AB,AM) <= dot(AB,AB) && 0 <= dot(BC,BM) <= dot(BC,BC)
@@ -83,6 +101,7 @@ function pointInRectangle(m, r) {
     var dotABAB = dot(AB, AB);
     var dotBCBM = dot(BC, BM);
     var dotBCBC = dot(BC, BC);
+    // console.log(AB, AM, BC, BM, dotABAM, dotABAB, dotBCBM, dotBCBC)
     return 0 <= dotABAM && dotABAM <= dotABAB && 0 <= dotBCBM && dotBCBM <= dotBCBC;
 }
   

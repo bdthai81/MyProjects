@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+path {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+rect {
+  fill: none;
+  cursor: crosshair;
+  pointer-events: all;
+}
+
+</style>
+<body>
+<script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+
+/**
+ * Small Boulder: 14 coordinates
+ * Image width = 75 px
+ * Image height = 68 px
+ */
+ var smallBoulderData = {
+        imgName: "small_boulder",
+        width: 75,
+        height: 68,
+        path: [[6,4], [15,1], [45,4], [73,16], [73,31],
+               [71,44], [74,51], [72,66], [20,64], [13,67],
+               [2,55], [6,38], [15,36], [6,4]]
+    };
+
+var line = d3.svg.line()
+    .interpolate("line");
+/**
+ * Function creates a block/mineral object: 1px = 1cm scale
+ * @param {*} parentNode: D3 parent node element to append the block/mineral object
+ * @param {*} obj: object's data in dictionary variables from objectsData.js
+ * @param {*} x: x position 
+ * @param {*} y: y position
+ * return block/mineral object
+ */
+ function createObject(parentNode, obj, x, y) {
+  // Align path to x,y
+  obj.path.forEach(function (element) {
+    element[0] += x;
+    element[1] += y;
+  })
+  // Create definition for object's pattern image
+  var patternID = obj.imgName + "Pattern";
+  parentNode.append('pattern')
+    .attr('id', patternID)
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', obj.width)
+    .attr('height', obj.height)
+    .attr("x", x)
+    .attr("y", y)
+    .append("image")
+    .attr("xlink:href", `${obj.imgName}.png`)
+    .attr('width', obj.width)
+    .attr('height', obj.height);
+  // Create object path
+  var object = parentNode.append("path")
+    .datum(obj.path)
+    .attr("d", line)
+    .style("stroke", "blue")
+    .style("stroke-width", 0)
+    .style("fill", `url(#${patternID})`);
+
+  return object;
+}
+
+// Create svg frame
+var width = 960,
+    height = 600;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+    
+svg.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", mousemoved);
+
+var sensorRect = svg.append("path")
+    .attr("id", "sensorRect")
+    .style("stroke", "blue")
+    .style("stroke-width", 2);
+
+var text = svg.append("text")
+    .attr("id", "distance")
+    .attr("x", 150)
+    .attr("y", 20)
+    .text("angle from rover's sensors' pov: ");
+
+// Create small boulder objects
+gObj = svg.append("g").attr("id", "smallBoulder");
+var smallBoulder = createObject(gObj, smallBoulderData, 300, 250);
+// Set base to be the center point of the boulder
+// Set the min,max of the object's coords
+var xMin = d3.min(smallBoulderData.path, d => d[0]);
+var xMax = d3.max(smallBoulderData.path, d => d[0]);
+var yMin = d3.min(smallBoulderData.path, d => d[1]);
+var yMax = d3.max(smallBoulderData.path, d => d[1]);
+// Set the midpoint of the object
+var avgX = ((xMin+xMax)/2);
+var avgY = ((yMin+yMax)/2);
+var base = {x: avgX, y: avgY};
+// function event handler
+function mousemoved() {
+  // Set the mouse clicked position
+  var m = d3.mouse(this);
+  // calculate the angle based on mouseclicked position to object
+  let angle = Math.PI + Math.atan2(-m[0] + base.x, m[1] - base.y);
+  angle = (angle * 180 / Math.PI) - 180;
+  // create the sensor's angle range
+  var rectPath = rotateSensor(angle);
+  // update rect range image & angle text
+  sensorRect.datum(rectPath)
+    .attr("d", line);
+  text.text("angle from rover's sensors' pov: " + angle);
+}
+// function rotates the sensor and calculate the rect range
+function rotateSensor(angle) {
+    // Set the center point of object in svg
+    var cx = avgX;
+    var cy = avgY;
+    // Set the midpoint of the object's width and height
+    var sbw = smallBoulderData.width/2;
+    var sbh = smallBoulderData.height/2;
+    var rectPath = [rotate(cx, cy, avgX-sbw, cy+sbh, angle),
+    rotate(cx, cy, cx+sbw, cy+sbh, angle),
+    rotate(cx, cy, cx+sbw, cy+sbh+200, angle),
+    rotate(cx, cy, cx-sbw, cy+sbh+200, angle),
+    ];
+
+    return rectPath;
+}
+
+/**
+ * Function rotates around the central point by the provided angle
+ * @param {*} cx : Central point x (origin)
+ * @param {*} cy : Central point y (origin)
+ * @param {*} x : The x coordinate of the point that we'll be rotating
+ * @param {*} y : The y coordinate of the point that we'll be rotating
+ * @param {*} angle : The angle, in degrees.
+ * returns the new x,y after rotation
+ */
+ function rotate(cx, cy, x, y, angle) {
+  var radians = -(Math.PI / 180) * angle,
+      cos = Math.cos(radians),
+      sin = Math.sin(radians),
+      nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+      ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+  return [nx, ny];
+}
+
+</script>
