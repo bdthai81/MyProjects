@@ -21,7 +21,7 @@ Phase 2:
 * Integrated keyboard event handlers for rover movements (currently: forward, reverse, pivot left, pivot right)
   - Thank you, Tom MacWright, for an excellent example of keyboard event handling (http://bl.ocks.org/tmcw/4444952)
 
-Phase 3: (Currently working on)
+Phase 3:
 * Sensors detection of object's distance
   - Thank you, Mike Bostock, for another great reference to start from (https://bl.ocks.org/mbostock/8027637)
 * Usage of vectors and dotproduct to check if each of the rover's sensors are within range of an object.
@@ -29,4 +29,12 @@ Phase 3: (Currently working on)
     - HC-SR04 claims to work best from 2cm-400cm.
     - For more reliabilty sensor reading data, I set the cap at 200cm. 
 
+Phase 4:
+* Integrated Rover's object sensors with the app.
+  - Algorithm to detect object's distance
+    - Wrote a prototype "testRotation.html" to figure out the sensor's range (rectangle) for each object based off the rover's position and angle
+    - Used vector & dotproduct to test if rover's sensor point is within the object's sensor range (rectangle)
+    - Used Mike Bostock's closestPath to figure out the distance within the max range (200px/cm).
+* Fine tuned the rover's pivot angle to 15 degrees.
     
+![Rover](images/roverSim.gif)
